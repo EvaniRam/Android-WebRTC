@@ -1,0 +1,19 @@
+# view AndroidManifest.xml #generated:24
+-keep class co.jp.fujixerox.FXWebRTC.FXWebRTCMainActivity { <init>(...); }
+
+# view res/layout/settings.xml #generated:10
+# view res/layout/settings.xml #generated:23
+-keep class co.jp.fujixerox.FXWebRTC.IntEditTextPreference { <init>(...); }
+
+# view AndroidManifest.xml #generated:38
+-keep class co.jp.fujixerox.FXWebRTC.PeerViewActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:34
+-keep class co.jp.fujixerox.FXWebRTC.SettingActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:40
+-keep class co.jp.fujixerox.FXWebRTC.SignalIntentService { <init>(...); }
+
+# view AndroidManifest.xml #generated:43
+-keep class co.jp.fujixerox.FXWebRTC.SignalingService { <init>(...); }
+

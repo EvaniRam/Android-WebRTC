@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_fxwebrtc" default="compile.module.fxwebrtc">
+  <dirname property="module.fxwebrtc.basedir" file="${ant.file.module_fxwebrtc}"/>
+  
+  <property name="module.jdk.home.fxwebrtc" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.fxwebrtc" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.fxwebrtc" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.fxwebrtc" value="${compiler.args}"/>
+  
+  <property name="fxwebrtc.output.dir" value="${module.fxwebrtc.basedir}/out/production/FXWebRTC"/>
+  <property name="fxwebrtc.testoutput.dir" value="${module.fxwebrtc.basedir}/out/test/FXWebRTC"/>
+  
+  <path id="fxwebrtc.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="fxwebrtc.module.production.classpath">
+    <path refid="${module.jdk.classpath.fxwebrtc}"/>
+  </path>
+  
+  <path id="fxwebrtc.runtime.production.module.classpath">
+    <pathelement location="${fxwebrtc.output.dir}"/>
+  </path>
+  
+  <path id="fxwebrtc.module.classpath">
+    <path refid="${module.jdk.classpath.fxwebrtc}"/>
+    <pathelement location="${fxwebrtc.output.dir}"/>
+  </path>
+  
+  <path id="fxwebrtc.runtime.module.classpath">
+    <pathelement location="${fxwebrtc.testoutput.dir}"/>
+    <pathelement location="${fxwebrtc.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.fxwebrtc">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.fxwebrtc">
+    <patternset refid="excluded.from.module.fxwebrtc"/>
+  </patternset>
+  
+  <path id="fxwebrtc.module.sourcepath">
+    <dirset dir="${module.fxwebrtc.basedir}">
+      <include name="src"/>
+      <include name="gen"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.fxwebrtc" depends="compile.module.fxwebrtc.production,compile.module.fxwebrtc.tests" description="Compile module FXWebRTC"/>
+  
+  <target name="compile.module.fxwebrtc.production" depends="register.custom.compilers" description="Compile module FXWebRTC; production classes">
+    <mkdir dir="${fxwebrtc.output.dir}"/>
+    <javac2 destdir="${fxwebrtc.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.fxwebrtc}/javac">
+      <compilerarg line="${compiler.args.fxwebrtc}"/>
+      <bootclasspath refid="fxwebrtc.module.bootclasspath"/>
+      <classpath refid="fxwebrtc.module.production.classpath"/>
+      <src refid="fxwebrtc.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.fxwebrtc"/>
+    </javac2>
+    
+    <copy todir="${fxwebrtc.output.dir}">
+      <fileset dir="${module.fxwebrtc.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.fxwebrtc.basedir}/gen">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.fxwebrtc.tests" depends="register.custom.compilers,compile.module.fxwebrtc.production" description="compile module FXWebRTC; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.fxwebrtc" description="cleanup module">
+    <delete dir="${fxwebrtc.output.dir}"/>
+    <delete dir="${fxwebrtc.testoutput.dir}"/>
+  </target>
+</project>

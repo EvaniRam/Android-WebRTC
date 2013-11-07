@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FXWebRTC</string>
+    <string name="settings_name">FXWebRTC SETTINGS</string>
+    <string name="title_server">SERVER</string>
+    <string name="title_server_host">ADDRESS</string>
+    <string name="title_server_port">PORT</string>
+    <string name="title_stun_server">STUN SERVER</string>
+    <string name="title_stun_server_host">ADDRESS</string>
+    <string name="title_stun_server_port">PORT</string>
+    <string name="menu_settings">SETTINGS</string>
+    <string name="peers_show">Currently Connected Peers: </string>
+    <item type="integer" name="default_server_port">8888</item>
+    <item type="integer" name="default_stun_server_port">10813</item>
+
+</resources>
