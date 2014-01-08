@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jain-sdp">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/jain-sdp.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

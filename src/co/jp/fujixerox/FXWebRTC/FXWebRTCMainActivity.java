@@ -2,7 +2,9 @@ package co.jp.fujixerox.FXWebRTC;
 
 import android.app.*;
 import android.content.*;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -12,8 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
 
 
 public class FXWebRTCMainActivity extends Activity implements View.OnClickListener {
@@ -24,7 +29,14 @@ public class FXWebRTCMainActivity extends Activity implements View.OnClickListen
     private Intent mSignalingservice;
     private BroadcastReceiver mclientstatereceiver;
 
+
+    private WebRTCClient client;
+    private String serverAddress;
+
     private ProgressDialog dialog;
+
+    private String mUsername;
+    private String mPassword;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,13 +52,15 @@ public class FXWebRTCMainActivity extends Activity implements View.OnClickListen
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.show();
 
-        Button button=(Button)findViewById(R.id.button_connect);
+        Button button=(Button)findViewById(R.id.button_login);
         button.setOnClickListener(this);
 
 
 
 
         dialog=new ProgressDialog(this);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
 
        //create a local broadcast receiver
         mclientstatereceiver=new ClientStateReceiver(this);
@@ -92,10 +106,10 @@ public class FXWebRTCMainActivity extends Activity implements View.OnClickListen
                   AlertDialog dialog=builder.create();
                   dialog.show();
 
+                  return true;
 
 
 
-                  break;
               default:
                   break;
 
@@ -147,10 +161,11 @@ public class FXWebRTCMainActivity extends Activity implements View.OnClickListen
 
 
 
-    public void onClientSignedin()
+    public void onClientSignedIn()
     {
         dialog.dismiss();
         Intent intent=new Intent(this,PeerViewActivity.class);
+
         startActivity(intent);
 
     }
@@ -164,11 +179,6 @@ public class FXWebRTCMainActivity extends Activity implements View.OnClickListen
 
          Toast.makeText(FXWebRTCMainActivity.this,msg,Toast.LENGTH_LONG).show();
 
-
-
-         Log.d(TAG,"toast is shown!");
-
-         stopService(mSignalingservice);
 
     }
 
@@ -187,14 +197,48 @@ public class FXWebRTCMainActivity extends Activity implements View.OnClickListen
 
           switch(v.getId())
           {
-              case R.id.button_connect:
+              case R.id.button_login:
 
 
-                 mSignalingservice=new Intent(this,SignalingService.class);
-                 startService(mSignalingservice);
+                 mUsername=((EditText)findViewById(R.id.editTextUsername)).getText().toString().trim();
+                 mPassword=((EditText)findViewById(R.id.editTextPassword)).getText().toString().trim();
+
+                 if(mUsername.length()==0 || mPassword.length()==0)
+                 {
+                      new AlertDialog.Builder(this)
+                              .setTitle("Invalid Input")
+                              .setMessage("Please input a valid username and password")
+                              .setPositiveButton(android.R.string.yes,new DialogInterface.OnClickListener(){
+                                  public void onClick(DialogInterface dialog,int which)
+                                  {
+                                      //nothing
+
+                                  }
+
+                              }).setIcon(android.R.drawable.ic_dialog_alert)
+                              .show();
+
+                     return;
+                 }
+
+
+
+                 SettingActivity.Settings.setContext(getApplicationContext());
+
+
+
+                 serverAddress=SettingActivity.Settings.getSignalingServerFullAddress();
+
+                 client=new WebRTCClient(mUsername,serverAddress);
+
+                 ApplicationEx app=(ApplicationEx)getApplicationContext();
+                 app.setWebRTCClient(client);
 
                  dialog.setMessage("Connecting to Server, Please wait ...");
                  dialog.show();
+
+
+                 new LoginTask().execute(client);
 
                   break;
 
@@ -205,6 +249,34 @@ public class FXWebRTCMainActivity extends Activity implements View.OnClickListen
 
 
 
+    }
+
+
+    private class LoginTask extends AsyncTask<WebRTCClient,Integer,Boolean>
+    {
+
+        private WebRTCClient client;
+
+        @Override
+        protected Boolean doInBackground(WebRTCClient... params) {
+
+
+
+            client=params[0];
+
+            return client.LogIn();
+
+        }
+
+
+
+        protected void onPostExecute(Boolean result)
+        {
+               if(result)
+                   onClientSignedIn();
+               else
+                   onServerFailure();
+        }
     }
 
 
@@ -261,7 +333,7 @@ public class FXWebRTCMainActivity extends Activity implements View.OnClickListen
                 case Constants.CLIENT_SIGNED_IN:
                      Log.d(TAG,"client is connected ");
 
-                     onClientSignedin();
+                     onClientSignedIn();
                      break;
                 case Constants.CLIENT_DISCONNECTED:
                      Log.d(TAG,"client is disconnected");

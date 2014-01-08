@@ -6,23 +6,228 @@
               android:layout_height="match_parent">
 
     <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Online Peers"
+            android:id="@+id/textViewOnlinePeers"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#ce9f0c"
+            android:textStyle="bold"
+            android:typeface="sans"/>
+
+    <TableLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/peers_show"
-            android:id="@+id/text_connected_peers"
-            android:layout_gravity="center"/>
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:id="@+id/TableLayoutOnlinePeers"
+            style="@android:style/Animation.Activity">
 
-    <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="230dp"
-            android:id="@+id/listView"
-            android:layout_gravity="center"/>
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/screen_background_light">
 
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Log off"
-            android:id="@+id/button_peerview_logoff"
-            android:focusableInTouchMode="true"
-            android:layout_gravity="center"/>
+            <TextView
+
+                    android:id="@+id/TableLayoutItemUser" android:text="USER"
+
+                    android:layout_weight="5"
+
+                    android:textColor="#e92fce18"
+
+                    android:padding="20dip" android:gravity="center"
+                    style="@android:style/TextAppearance.Holo.Widget"
+                    android:textStyle="bold"/>
+
+            <TextView
+
+                    android:id="@+id/TableLayoutItemPlatform" android:text="PLATFORM"
+
+                    android:layout_weight="5"
+
+                    android:textColor="#e92fce18"
+
+                    android:padding="20dip" android:gravity="center"
+                    style="@android:style/TextAppearance.Holo.Widget"
+                    android:textStyle="bold"/>
+
+            <TextView
+
+                    android:id="@+id/TableLayoutItemStatus" android:text="STATUS"
+
+                    android:layout_weight="5"
+
+                    android:textColor="#e92fce18"
+
+                    android:padding="20dip" android:gravity="center"
+                    style="@android:style/TextAppearance.Holo.Widget"
+                    android:textStyle="bold"/>
+
+            <TextView
+
+                    android:id="@+id/TableLayoutItemUDPEnabled" android:text="UDP"
+
+                    android:layout_weight="5"
+
+                    android:textColor="#e92fce18"
+
+                    android:padding="20dip" android:gravity="center"
+                    style="@android:style/TextAppearance.Holo.Widget"
+                    android:textStyle="bold"/>
+
+            <TextView
+
+                    android:id="@+id/TableLayoutItemAction" android:text="ACTION"
+
+                    android:layout_weight="5"
+
+                    android:textColor="#e92fce18"
+
+                    android:padding="20dip" android:gravity="center"
+                    style="@android:style/TextAppearance.Holo.Widget"
+                    android:textStyle="bold"/>
+        </TableRow>
+
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_blue">
+
+         <ImageView
+                 android:src="@drawable/user_icon"
+                 android:gravity="center"
+                 android:padding="5dip"
+                 android:layout_weight="10"
+                 android:layout_height="fill_parent"
+                 />
+
+            <ImageView
+                    android:src="@drawable/ic_contact_picture"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="10"
+                    android:layout_height="fill_parent"
+                    />
+
+            <ImageView
+                    android:src="@drawable/ic_contact_picture"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="10"
+                    android:layout_height="fill_parent"
+                    />
+
+            <ImageView
+                    android:src="@drawable/icon_status_busy"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="10"
+                    android:layout_height="fill_parent"
+                    />
+
+            <ImageView
+                    android:src="@drawable/ic_contact_picture"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="10"
+                    android:layout_height="fill_parent"
+                    android:clickable="true"
+                    />
+
+
+        </TableRow>
+
+
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/darker_blue">
+
+            <ImageView
+                    android:src="@drawable/user_icon"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="10"
+                    />
+
+            <ImageView
+                    android:src="@drawable/android_icon"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="10"
+                    />
+
+            <ImageView
+                    android:src="@drawable/ic_contact_picture"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="10"
+                    />
+
+            <ImageView
+                    android:src="@drawable/icon_status_idle"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="10"
+                    />
+
+            <ImageView
+                    android:src="@drawable/ic_contact_picture"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="10"
+                    android:clickable="true"
+                    />
+
+
+        </TableRow>
+
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_blue">
+
+            <ImageView
+                    android:src="@drawable/user_icon"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="10"
+                    />
+
+            <ImageView
+                    android:src="@drawable/browser_icon"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="10"
+                    />
+
+            <ImageView
+                    android:src="@drawable/available_icon"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="10"
+                    />
+
+            <ImageButton
+                    android:src="@drawable/icon_status_busy"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="10"
+                    android:disabled="true"
+                    />
+
+            <ImageView
+                    android:src="@drawable/ic_contact_picture"
+                    android:gravity="center"
+                    android:padding="5dip"
+                    android:layout_weight="10"
+                    android:clickable="true"
+                    />
+
+
+        </TableRow>
+
+    </TableLayout>
+
 </LinearLayout>

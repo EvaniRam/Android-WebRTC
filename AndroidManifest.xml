@@ -17,9 +17,10 @@
     -->
 
     <application
-            android.name="co.jp.fujixerox.FXWebRTC.ApplicationEx"
+            android:name="co.jp.fujixerox.FXWebRTC.ApplicationEx"
             android:label="@string/app_name"
             android:icon="@drawable/ic_launcher"
+            android:theme="@android:style/Theme.Holo"
            >
         <activity
                 android:name="FXWebRTCMainActivity"
@@ -45,7 +46,6 @@
         <service
                 android:name=".SignalIntentService"
                 android:exported="false"/>
-        <service android:name=".SignalingService"/>
 
     </application>
 </manifest>

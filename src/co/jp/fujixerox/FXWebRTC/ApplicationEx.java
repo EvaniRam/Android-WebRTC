@@ -17,6 +17,7 @@ public class ApplicationEx extends Application {
 
     public static final String TAG="ApplicationEx";
     private static Context context;
+    private WebRTCClient  webRTCClient;
 
     @Override
     public void onCreate() {
@@ -26,6 +27,16 @@ public class ApplicationEx extends Application {
 
 
         super.onCreate();
+    }
+
+    public void setWebRTCClient(WebRTCClient client)
+    {
+        this.webRTCClient=client;
+    }
+
+    public WebRTCClient getWebRTCClient()
+    {
+        return this.webRTCClient;
     }
 
 

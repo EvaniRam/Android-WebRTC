@@ -25,8 +25,8 @@ public class SettingActivity  extends Activity {
        private static final String TAG="SettingActivity";
 
        //connection and message relay server
-       private static final String KEY_SERVER_HOST="server_host";
-       private static final String KEY_SERVER_PORT="server_port";
+       private static final String KEY_SIGNAL_SERVER_FULL_ADDRESS="signal_server_full_address";
+
 
       //STUN Server
        private static final String KEY_STUN_SERVER_HOST="stun_server_host";
@@ -50,20 +50,16 @@ public class SettingActivity  extends Activity {
         }
 
 
-        public static String getServerHost()
+        public static String getSignalingServerFullAddress()
         {
 
 
             SharedPreferences sp= PreferenceManager.getDefaultSharedPreferences(context);
 
-            return sp.getString(KEY_SERVER_HOST,"10.0.2.2");
+            return sp.getString(KEY_SIGNAL_SERVER_FULL_ADDRESS,"114.160.59.82:10801/WhiteboardApp/whiteboardendpoint");
         }
 
-        public static int getServerPort()
-        {
-            SharedPreferences sp=PreferenceManager.getDefaultSharedPreferences(context);
-            return sp.getInt(KEY_SERVER_PORT, 8888);
-        }
+
 
         public static String getStunServerHost()
         {
@@ -118,8 +114,10 @@ public class SettingActivity  extends Activity {
         switch(item.getItemId())
         {
             case android.R.id.home:
-                Intent intent=new Intent(this,FXWebRTCMainActivity.class);
-                startActivity(intent);
+               // Intent intent=new Intent(this,FXWebRTCMainActivity.class);
+               // startActivity(intent);
+                finish();
+
                 return true;
             default:
                 break;
@@ -168,9 +166,7 @@ public class SettingActivity  extends Activity {
 
         private void setValuetoSummary()
         {
-                 findPreference(KEY_SERVER_HOST).setSummary(Settings.getServerHost());
-
-                 findPreference(KEY_SERVER_PORT).setSummary(String.valueOf(Settings.getServerPort()));
+                 findPreference(KEY_SIGNAL_SERVER_FULL_ADDRESS).setSummary(Settings.getSignalingServerFullAddress());
 
                  findPreference(KEY_STUN_SERVER_HOST).setSummary(Settings.getStunServerHost());
 

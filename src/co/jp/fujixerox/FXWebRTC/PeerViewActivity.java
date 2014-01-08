@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.*;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.content.DialogInterface;
 import android.widget.Button;
@@ -27,14 +31,24 @@ public class PeerViewActivity extends Activity implements View.OnClickListener{
 
     private ProgressDialog progressDialog;
 
+    private WebRTCClient webRTCClient;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.peerview);
 
-        Button button=(Button)findViewById(R.id.button_peerview_logoff);
-        button.setOnClickListener(this);
+       // Button button=(Button)findViewById(R.id.button_peerview_logoff);
+       // button.setOnClickListener(this);
+
+        ApplicationEx app=(ApplicationEx)getApplicationContext();
+        webRTCClient=app.getWebRTCClient();
+
+        if(webRTCClient==null)
+        {
+            Log.e(TAG,"cannot get webrtc client instance!");
+        }
 
         //create a local broadcast receiver
         mclientstatereceiver=new ClientStateReceiver(this);
@@ -53,12 +67,7 @@ public class PeerViewActivity extends Activity implements View.OnClickListener{
 
         switch(v.getId())
         {
-            case R.id.button_peerview_logoff:
 
-
-                showLogoffDialog();
-
-                break;
             default:
                 break;
         }
@@ -74,7 +83,7 @@ public class PeerViewActivity extends Activity implements View.OnClickListener{
         {
             case KeyEvent.KEYCODE_BACK:
                 showLogoffDialog();
-                break;
+                return true;
             default:
                 break;
 
@@ -86,6 +95,37 @@ public class PeerViewActivity extends Activity implements View.OnClickListener{
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.peer_view_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId())
+        {
+            case R.id.peer_view_menu_logout:
+                showLogoffDialog();
+                return true;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+
+    public void switchtoMainActivity(boolean logoutSuccess)
+    {
+       // Intent intent=new Intent(this,FXWebRTCMainActivity.class);
+      //  startActivity(intent);
+        finish();
+    }
 
 
 
@@ -117,7 +157,7 @@ public class PeerViewActivity extends Activity implements View.OnClickListener{
     public void showLogoffProgressDialog()
     {
         progressDialog=new ProgressDialog(this);
-        progressDialog.setMessage("Loging off...");
+        progressDialog.setMessage("Logging off...");
         progressDialog.show();
     }
 
@@ -134,6 +174,8 @@ public class PeerViewActivity extends Activity implements View.OnClickListener{
 
                     dialog.dismiss();
                     showLogoffProgressDialog();
+
+                    new LogoutTask().execute(webRTCClient);
 
 
                     break;
@@ -200,6 +242,33 @@ public class PeerViewActivity extends Activity implements View.OnClickListener{
             }
 
 
+        }
+    }
+
+
+    private class LogoutTask extends AsyncTask<WebRTCClient,Integer,Boolean>
+    {
+
+        private WebRTCClient client;
+
+        @Override
+        protected Boolean doInBackground(WebRTCClient... params) {
+
+
+
+            client=params[0];
+
+            return client.LogOut();
+
+        }
+
+
+
+        protected void onPostExecute(Boolean result)
+        {
+
+            progressDialog.dismiss();
+            switchtoMainActivity(result);
         }
     }
 

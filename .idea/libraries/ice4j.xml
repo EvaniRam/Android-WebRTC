@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="ice4j">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/ice4j.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/libs/ice4j.jar!/" />
+    </SOURCES>
+  </library>
+</component>

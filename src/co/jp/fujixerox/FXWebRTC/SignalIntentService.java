@@ -104,9 +104,9 @@ public class SignalIntentService extends IntentService  implements PeerConnectio
         {
             SettingActivity.Settings.setContext(getApplicationContext());
         }
-        String server_host=SettingActivity.Settings.getServerHost();
-        int server_port=SettingActivity.Settings.getServerPort();
-        peerConnectionClient.setParam(server_host,server_port,"client_andriod");
+      //  String server_host=SettingActivity.Settings.getServerHost();
+       // int server_port=SettingActivity.Settings.getServerPort();
+       // peerConnectionClient.setParam(server_host,server_port,"client_andriod");
 
         peerConnectionClient.initialize();
 

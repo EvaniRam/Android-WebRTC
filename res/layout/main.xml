@@ -5,21 +5,82 @@
               android:layout_height="fill_parent"
               android:longClickable="false">
 
-    <Space
-            android:layout_width="122dp"
-            android:layout_height="75dp"
-            android:id="@+id/space"
-            android:layout_gravity="center"
-            android:layout_marginLeft="72dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="FX AdapComm VideoConference"
+            android:id="@+id/textViewFXAdapCommVC"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Input username and password to login:"
+            android:id="@+id/textViewInputTip"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:gravity="center"
+           />
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="3dp"
+            android:gravity="center">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username:"
+                android:id="@+id/textViewUsername"
+                android:textStyle="bold"/>
+
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/editTextUsername"
+                android:singleLine="true"
+                />
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="3dp"
+            android:gravity="center">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password:"
+                android:id="@+id/textViewPassword"
+                android:textStyle="bold"/>
+
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/editTextPassword"
+                android:singleLine="true"
+                android:password="true"/>
+    </LinearLayout>
 
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Connect"
-            android:id="@+id/button_connect"
+            android:text="Login"
+            android:id="@+id/button_login"
             android:layout_gravity="center"
             android:focusableInTouchMode="true"
-            android:singleLine="true"/>
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:background="#08233e"
+            android:gravity="center"/>
 
 
 </LinearLayout>

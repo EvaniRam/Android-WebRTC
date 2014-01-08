@@ -3,7 +3,6 @@
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
-        <includeSystemProguardFile>false</includeSystemProguardFile>
         <includeAssetsFromLibraries>true</includeAssetsFromLibraries>
         <resOverlayFolders />
       </configuration>
@@ -13,13 +12,30 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="libjingle_peerconnection" level="application" />
     <orderEntry type="library" name="android-support-v4" level="project" />
     <orderEntry type="library" name="libjingle_peerconnection" level="project" />
+    <orderEntry type="library" name="jetty-client-9.1.0.v20131115" level="project" />
+    <orderEntry type="library" name="websocket-api-9.1.0.v20131115" level="project" />
+    <orderEntry type="library" name="websocket-client-9.1.0.v20131115" level="project" />
+    <orderEntry type="library" name="jetty-io-9.1.0.v20131115" level="project" />
+    <orderEntry type="library" name="jetty-util-9.1.0.v20131115" level="project" />
+    <orderEntry type="library" name="websocket-common-9.1.0.v20131115" level="project" />
+    <orderEntry type="library" name="json-simple-1.1.1" level="project" />
+    <orderEntry type="library" name="autobahn-0.5.0" level="project" />
+    <orderEntry type="library" name="jackson-core-asl-1.9.7" level="project" />
+    <orderEntry type="library" name="jackson-mapper-asl-1.9.7" level="project" />
+    <orderEntry type="library" name="jetty-client-8.1.14.v20131031" level="project" />
+    <orderEntry type="library" name="jetty-util-8.1.14.v20131031" level="project" />
+    <orderEntry type="library" name="jetty-websocket-8.1.14.v20131031" level="project" />
+    <orderEntry type="library" name="ice4j" level="project" />
+    <orderEntry type="library" name="jain-sdp" level="project" />
+    <orderEntry type="library" name="autobahn-android-0.5.2-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="java_websocket" level="project" />
   </component>
 </module>
 
