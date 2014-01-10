@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/udp_test_menu_terminate"
+          android:icon="@drawable/icon_terminate"
+          android:title="TERMINATE"
+          android:showAsAction="always|withText"
+          />
+
+</menu>

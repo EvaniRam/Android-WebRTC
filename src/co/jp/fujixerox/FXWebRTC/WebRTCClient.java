@@ -39,16 +39,96 @@ public class WebRTCClient implements WebSocketConnection.MessageHandler{
     private ScheduledExecutorService heartbeatService;
     private Future<?> currentHeartBeatTask;
 
+    private boolean logoutCalled=false;
+
+
+
+    public void StatusUpdate(Peers.Status new_status)
+    {
+        if(status==new_status)
+            return;
+
+        status=new_status;
+
+        String strStatus=status==Peers.Status.STATUS_BUSY?"busy":"idle";
+        JSONObject obj=new JSONObject();
+        obj.put("action", "update_status");
+        obj.put("status",strStatus);
+
+        StringWriter out = new StringWriter();
+
+        try
+        {
+
+            obj.writeJSONString(out);
+
+        } catch(IOException e)
+
+        {
+            e.printStackTrace();
+        }
+
+
+        String jsonText=out.toString();
+        sendMessage(jsonText);
+
+
+    }
+
+    public Boolean sendUDPInvitation(int peerId) {
+
+
+        //first update status to server
+        StatusUpdate(Peers.Status.STATUS_BUSY);
+
+        JSONObject obj=new JSONObject();
+        obj.put("action", "peer_msg");
+        obj.put("from",Integer.toString(id));
+        obj.put("to", Integer.toString(peerId));
+        obj.put("msg","invite_udp");
+
+
+
+        StringWriter out = new StringWriter();
+
+        try
+        {
+
+            obj.writeJSONString(out);
+
+        } catch(IOException e)
+
+        {
+            e.printStackTrace();
+            return false;
+        }
+
+
+        String jsonText=out.toString();
+
+
+        return sendMessage(jsonText);
+
+
+
+    }
 
 
     public interface GUICallback
     {
-        void AddPeer(Peers peer);
-        void RemovePeer(Peers peer);
-        void UpdatePeer(Peers peer);
-        void InvitationDeclined(String reason);
-        void InvitationAccepted();
-        void InvitationReceived(Peers peer);
+
+        void onConnectionClosed(int code, String reason);
+        void AddPeer(int peerID,Peers peer);
+        void RemovePeer(int peerID,Peers peer);
+        void UpdatePeer(int peerID,Peers peer);
+
+        void UDPInvitationDeclined(String reason);
+        void UDPInvitationAccepted();
+        void UDPInvitationReceived(Peers peer);
+
+        void VideoInvitationDeclined(String reason);
+        void VideoInvitationAccepted();
+        void VideoInvitationReceived(Peers peer);
         void SDPSent();
         void SDPReceived();
         void StartICEChecking();
@@ -62,6 +142,11 @@ public class WebRTCClient implements WebSocketConnection.MessageHandler{
         void OnUDPBWFinish(String message);
     }
 
+
+    public  HashMap<Integer, Peers> getPeers()
+    {
+     return peers;
+    }
 
     public void setGUICallback(GUICallback callback)
     {
@@ -206,7 +291,14 @@ public class WebRTCClient implements WebSocketConnection.MessageHandler{
                 currentHeartBeatTask.cancel(true);
         }
 
+        if(heartbeatService!=null)
+        {
+            heartbeatService.shutdownNow();
 
+
+        }
+
+        logoutCalled=true;
         JSONObject obj=new JSONObject();
         obj.put("action", "logout");
         obj.put("id",new Integer(id));
@@ -268,10 +360,36 @@ public class WebRTCClient implements WebSocketConnection.MessageHandler{
 
         Log.d(TAG,"on close is called inside");
 
+
+        if(currentHeartBeatTask!=null)
+        {
+            if(!currentHeartBeatTask.isCancelled() &&  !currentHeartBeatTask.isDone())
+                currentHeartBeatTask.cancel(true);
+        }
+
+        if(heartbeatService!=null)
+        {
+            heartbeatService.shutdownNow();
+
+
+        }
+
+
         if(closeLatch!=null)
         {
             closeLatch.countDown();
             Log.d(TAG,"close latch is counted down");
+        }
+
+
+        if(guicallback!=null && logoutCalled==false)
+        {
+
+            guicallback.onConnectionClosed(statusCode,reason);
+        }
+        else
+        {
+            logoutCalled=false;
         }
 
     }
@@ -330,11 +448,16 @@ public class WebRTCClient implements WebSocketConnection.MessageHandler{
 
     }
 
-    public void sendMessage(String msg)
+    public boolean sendMessage(String msg)
     {
-        signalConnection.sendMessage(msg);
+
+
+        if(signalConnection.sendMessage(msg)==false)
+            return false;
 
         Log.d(TAG,"message is sent: "+msg);
+
+            return true;
     }
 
     public void processMessage(String msg)
@@ -466,7 +589,7 @@ public class WebRTCClient implements WebSocketConnection.MessageHandler{
     }
 
 
-    public void declinePeer(int peerID,String reason)
+    public boolean declinePeer(int peerID,String reason)
     {
         JSONObject obj=new JSONObject();
         obj.put("action", "peer_msg");
@@ -488,11 +611,61 @@ public class WebRTCClient implements WebSocketConnection.MessageHandler{
 
         {
             e.printStackTrace();
+            return false;
         }
 
 
         String jsonText=out.toString();
-        sendMessage(jsonText);
+        return sendMessage(jsonText);
+
+    }
+
+
+    public boolean acceptPeer(int peerID)
+    {
+
+        //update status first
+        //first update status to server
+        StatusUpdate(Peers.Status.STATUS_BUSY);
+
+
+
+
+        //init before sending ok response,to make sure that the ice instance
+        //is created when the remote sdp message is received
+
+
+        JSONObject obj=new JSONObject();
+        obj.put("action", "peer_msg");
+        obj.put("from",Integer.toString(id));
+        obj.put("to", Integer.toString(peerID));
+        obj.put("msg","invite_ok");
+
+
+
+
+        StringWriter out = new StringWriter();
+
+        try
+        {
+
+            obj.writeJSONString(out);
+
+        } catch(IOException e)
+
+        {
+            e.printStackTrace();
+
+            return false;
+        }
+
+
+        String jsonText=out.toString();
+       return sendMessage(jsonText);
+
+
+
+
 
     }
 
@@ -503,7 +676,8 @@ public class WebRTCClient implements WebSocketConnection.MessageHandler{
         int peer_id=Integer.parseInt((String)json.get("id"));
 
 
-
+        if(peer_id==this.id)
+            return false;
 
         //see if peer already exists
         if(peers.containsKey(peer_id))
@@ -542,7 +716,7 @@ public class WebRTCClient implements WebSocketConnection.MessageHandler{
 
         if(guicallback!=null)
         {
-            guicallback.AddPeer(peer);
+            guicallback.AddPeer(peer_id,peer);
         }
 
         return true;
@@ -551,6 +725,10 @@ public class WebRTCClient implements WebSocketConnection.MessageHandler{
     public boolean removePeer(JSONObject json)
     {
         int peer_id=Integer.parseInt((String)json.get("id"));
+
+
+        if(this.id==peer_id)
+            return false;
 
         if(!peers.containsKey(peer_id))
         {
@@ -561,7 +739,7 @@ public class WebRTCClient implements WebSocketConnection.MessageHandler{
 
         if(guicallback!=null)
         {
-            guicallback.RemovePeer(peers.get(peer_id));
+            guicallback.RemovePeer(peer_id,peers.get(peer_id));
         }
 
         peers.remove(peer_id);
@@ -574,6 +752,10 @@ public class WebRTCClient implements WebSocketConnection.MessageHandler{
     public boolean updatePeerStatus(JSONObject json)
     {
         int peer_id=Integer.parseInt((String)json.get("id"));
+
+        if(this.id==peer_id)
+            return false;
+
 
         if(!peers.containsKey(peer_id))
         {
@@ -591,7 +773,7 @@ public class WebRTCClient implements WebSocketConnection.MessageHandler{
 
         if(guicallback!=null)
         {
-            guicallback.UpdatePeer(peer);
+            guicallback.UpdatePeer(peer_id,peer);
         }
 
         return true;

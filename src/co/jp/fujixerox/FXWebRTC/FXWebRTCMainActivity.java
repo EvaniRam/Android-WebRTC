@@ -31,6 +31,7 @@ public class FXWebRTCMainActivity extends Activity implements View.OnClickListen
 
 
     private WebRTCClient client;
+
     private String serverAddress;
 
     private ProgressDialog dialog;
@@ -165,6 +166,8 @@ public class FXWebRTCMainActivity extends Activity implements View.OnClickListen
     {
         dialog.dismiss();
         Intent intent=new Intent(this,PeerViewActivity.class);
+        intent.putExtra("id",client.getUserID());
+        intent.putExtra("username",client.getUsername());
 
         startActivity(intent);
 
@@ -233,6 +236,10 @@ public class FXWebRTCMainActivity extends Activity implements View.OnClickListen
 
                  ApplicationEx app=(ApplicationEx)getApplicationContext();
                  app.setWebRTCClient(client);
+
+                 WebRTCClientGUICallbackInstance callbackInstance=new WebRTCClientGUICallbackInstance(getApplicationContext());
+
+                 client.setGUICallback(callbackInstance);
 
                  dialog.setMessage("Connecting to Server, Please wait ...");
                  dialog.show();
@@ -338,12 +345,7 @@ public class FXWebRTCMainActivity extends Activity implements View.OnClickListen
                 case Constants.CLIENT_DISCONNECTED:
                      Log.d(TAG,"client is disconnected");
                      break;
-                case Constants.PEER_CONNECTED:
-                     Log.d(TAG,"peer is connected");
-                     break;
-                case Constants.PEER_DISCONNECTED:
-                     Log.d(TAG,"peer is disconnected");
-                     break;
+
                 case Constants.MESSAGE_FROM_PEER:
                      Log.d(TAG,"received message from peer");
                      break;

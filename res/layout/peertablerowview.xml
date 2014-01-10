@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<TableRow
+
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/TableRowPeer"
+            android:background="@color/darker_blue">
+
+        <ImageView
+                android:src="@drawable/user_icon"
+                android:gravity="center"
+                android:padding="5dip"
+
+                android:layout_weight="10"
+                android:layout_gravity="center_horizontal|center_vertical"
+
+                />
+
+
+        <TextView
+
+                android:id="@+id/TableRowUserID" android:text="2"
+
+                android:layout_weight="10"
+
+                android:textColor="#fb060707"
+
+                android:layout_gravity="center_horizontal|center_vertical"
+
+                android:padding="5dip"
+
+                android:gravity="center"
+                style="@android:style/TextAppearance.Holo.Widget"
+                android:textStyle="bold"/>
+
+
+        <TextView
+
+                android:id="@+id/TableRowUserName" android:text="FujiXerox2"
+
+                android:layout_weight="10"
+
+                android:textColor="#fb060707"
+
+
+                android:layout_gravity="center_horizontal|center_vertical"
+
+                android:padding="5dip"
+
+                android:gravity="center"
+                style="@android:style/TextAppearance.Holo.Widget"
+                android:textStyle="bold"/>
+
+        <ImageView
+                android:id="@+id/TableRowPlatformPic"
+                android:src="@drawable/android_icon"
+                android:gravity="center"
+                android:padding="5dip"
+
+                android:layout_weight="10"
+                android:layout_gravity="center_horizontal|center_vertical"
+                />
+
+        <ImageView
+
+                android:id="@+id/TableRowStatusPic"
+                android:src="@drawable/msn_busy_onphone"
+                android:gravity="center"
+                android:padding="5dip"
+
+                android:layout_weight="10"
+                android:layout_gravity="center_horizontal|center_vertical"
+                />
+
+        <ImageView
+
+                android:id="@+id/TableRowUDPPic"
+                android:src="@drawable/corrent_icon"
+                android:gravity="center"
+                android:padding="5dip"
+
+                android:layout_weight="10"
+                android:layout_gravity="center_horizontal|center_vertical"
+                />
+
+
+
+
+</TableRow>
+
+

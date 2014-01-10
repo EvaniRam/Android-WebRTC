@@ -89,9 +89,7 @@ public final class Constants {
 
     public static final int CLIENT_DISCONNECTED=11;
 
-    public static final int PEER_CONNECTED=12;
 
-    public static final int PEER_DISCONNECTED=13;
 
     public static final int MESSAGE_FROM_PEER=14;
 
@@ -100,5 +98,30 @@ public final class Constants {
     public static final int SERVER_CONNECTION_FAILURE=16;
 
     public static final int CLIENT_STATE_NULL=20;
+
+
+    //peer status
+    public static final int PEER_JOIN=21;
+
+    public static final int PEER_LEAVE=22;
+
+    public static final int PEER_UPDATE=23;
+
+    public static final int UDP_INVITATION_ACCEPTED=24;
+
+    public static final int UDP_INVITATION_DECLINED=25;
+
+    public static final int UDP_INVITATION_RECEIVED=26;
+
+
+    public static final int VIDEO_INVITATION_ACCEPTED=27;
+
+    public static final int VIDEO_INVITATION_DECLINED=28;
+
+    public static final int VIDEO_INVITATION_RECEIVED=29;
+
+
+    //network status
+    public static final int CONNECTION_CLOSED=31;
 
 }

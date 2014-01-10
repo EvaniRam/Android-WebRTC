@@ -15,11 +15,12 @@ import org.java_websocket.handshake.ServerHandshake;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.channels.NotYetConnectedException;
 
 
 public class WebSocketConnection {
 
-    private static final String TAG="FXWebSocketConnection";
+    private static final String TAG="WebSocketConnection";
 
     @SuppressWarnings("unused")
     //private Session session;
@@ -126,7 +127,13 @@ public class WebSocketConnection {
             return false;
 
 
+        try{
         socketClient.send(msg);
+        }catch (NotYetConnectedException e)
+        {
+            Log.e(TAG,"connection to the server is lost!");
+            return false;
+        }
 
 
 
@@ -182,12 +189,12 @@ public class WebSocketConnection {
             Log.d(TAG, "Connection closed: "+code+ "---" + reason);
 
 
-
+            socketClient=null;
 
             if(appmessagehandler!=null)
             {
                 appmessagehandler.onClose(code, reason);
-                Log.d(TAG,"on close is called");
+
             }
 
         }
